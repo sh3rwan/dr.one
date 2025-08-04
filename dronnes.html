@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Dr. One: Proposal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f8fafc;
+        }
+        .section-title {
+            font-weight: 900;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            color: #1a202c;
+            border-left: 5px solid #ca8a04; /* Gold color */
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .sub-heading {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .brand-highlight {
+            color: #ca8a04;
+            font-weight: 700;
+        }
+        
+        /* Header & Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .logo-svg {
+            width: 60px;
+            height: 60px;
+        }
+       
+        /* Hero Animation */
+        .hero-section {
+            height: 400px;
+            width: 100%;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://krso.gov.krd/content/upload/1/root/administrative12_w1200.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+        .hero-drone {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            opacity: 0;
+            animation: fly-in 5s infinite ease-out;
+        }
+        @keyframes fly-in {
+            0% { opacity: 0; transform: scale(0.5); }
+            20% { opacity: 1; transform: scale(1); }
+            80% { opacity: 1; }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.5); }
+        }
+        .protection-dome {
+            position: absolute;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.4) 0%, rgba(59, 130, 246, 0) 70%);
+            border-radius: 50%;
+            animation: expand-dome 5s infinite ease-out;
+        }
+        @keyframes expand-dome {
+            0%, 100% { width: 0; height: 0; opacity: 0; }
+            50% { opacity: 1; }
+            90% { width: 1000px; height: 1000px; opacity: 0; }
+        }
+
+        /* Engagement Sequence Cards */
+        .engagement-sequence {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+        .engagement-step {
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+        .engagement-step h4 {
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        .engagement-animation-container {
+            height: 120px;
+            margin-bottom: 1rem;
+        }
+        
+        /* Interactive Map */
+        .map-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 2rem auto;
+            aspect-ratio: 1.6 / 1;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+        .attack-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .attack-vector {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .vector-path {
+            stroke: #ef4444;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 8 8;
+            animation: draw-vector 4s linear infinite;
+        }
+        @keyframes draw-vector {
+            to { stroke-dashoffset: -160; }
+        }
+        .map-tooltip {
+            display: none;
+            position: absolute;
+            background-color: rgba(31, 41, 55, 0.9);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            width: 250px;
+            z-index: 20;
+            pointer-events: none;
+        }
+        .attack-point:hover + .map-tooltip {
+            display: block;
+        }
+        
+        /* Tables */
+        .styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .styled-table th, .styled-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .styled-table th {
+            background-color: #f1f5f9;
+            font-weight: 700;
+            color: #334155;
+        }
+        .styled-table tr:last-child td {
+            border-bottom: none;
+        }
+        .styled-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .styled-table td {
+            color: #475569;
+        }
+        .icon-check { color: #22c55e; }
+        .icon-arrow { color: #3b82f6; }
+        
+        /* Neutralization Animation Section */
+        .recovery-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .recovery-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .recovery-btn.active {
+            background-color: #ca8a04;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+        .recovery-btn:not(.active) {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        .recovery-animation-container {
+            border: 2px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            height: 350px;
+            position: relative;
+            overflow: hidden;
+            background-color: #fff;
+        }
+        .hostile-drone, .catcher-drone {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            transition: all 3s ease-in-out;
+        }
+        .net {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px dashed #6b7280;
+            border-radius: 50%;
+            background: rgba(107, 114, 128, 0.2);
+            transition: all 0.5s ease;
+            transform: scale(0);
+            opacity: 0;
+            z-index: 20;
+        }
+        .parachute {
+             position: absolute;
+             width: 90px;
+             height: 45px;
+             background: #9ca3af;
+             border-radius: 45px 45px 0 0;
+             transition: all 0.5s ease;
+             transform: scaleY(0) translateY(-20px);
+             opacity: 0;
+             z-index: 15;
+        }
+        .animation-labels {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+        .label-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .color-box {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+        }
+
+        /* Contacts Section */
+        .contact-card {
+            background-color: #fff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        /* New Sections Styling */
+        .risk-card {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+        .deployment-scenario-card {
+            background: white;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .deployment-scenario-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .intel-loop {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+            height: 200px;
+            margin-top: 2rem;
+        }
+        .intel-step {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #eef2ff;
+            color: #4338ca;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            z-index: 10;
+        }
+        .intel-arrow {
+            position: absolute;
+            stroke: #4f46e5;
+            stroke-width: 2;
+            fill: none;
+            stroke-dasharray: 5;
+            animation: dash 2s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -20; }
+        }
+        .budget-card {
+            background-color: #fff;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        .budget-card-icon {
+            font-size: 2.5rem;
+            color: #ca8a04;
+            margin-bottom: 1rem;
+        }
+        .training-pathway {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-top: 2rem;
+        }
+        .training-pathway::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background-color: #e2e8f0;
+            transform: translateY(-50%);
+        }
+        .training-phase {
+            width: 30%;
+            text-align: center;
+            position: relative;
+        }
+        .training-phase-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #ca8a04;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px #ca8a04;
+        }
+        .case-study-card {
+             background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        .security-animation-container {
+            height: 250px;
+            background: #fff;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        .hacking-attempt {
+            stroke: #ef4444;
+            stroke-width: 2;
+            stroke-dasharray: 4;
+            animation: hack-pulse 1s infinite;
+        }
+        @keyframes hack-pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.2; }
+            100% { opacity: 1; }
+        }
+        .secure-link {
+            stroke-width: 4;
+            stroke: #22c55e;
+        }
+        .padlock {
+            fill: #16a34a;
+            animation: move-lock 3s linear infinite;
+        }
+        @keyframes move-lock {
+            from { motion-offset: 0%; }
+            to { motion-offset: 100%; }
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1f2937;
+            color: #d1d5db;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="logo-container">
+                <img class="logo-svg" src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Roj_emblem.svg" alt="Kurdistan Region Emblem">
+                <h1 class="text-2xl font-bold text-gray-900">Project <span class="brand-highlight">Dr. One</span></h1>
+            </div>
+            <div>
+                <a href="#challenge" class="text-gray-600 hover:text-yellow-600 px-3 py-2">The Challenge</a>
+                <a href="#solution" class="text-gray-600 hover:text-yellow-600 px-3 py-2">The Solution</a>
+                <a href="#deployment" class="text-gray-600 hover:text-yellow-600 px-3 py-2">Deployment</a>
+                <a href="#performance" class="text-gray-600 hover:text-yellow-600 px-3 py-2">Performance</a>
+                <a href="#partnership" class="text-gray-600 hover:text-yellow-600 px-3 py-2">Partnership</a>
+                <a href="#next-steps" class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600">Next Steps</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-section">
+        <div class="protection-dome"></div>
+        <div id="hero-drones-container"></div>
+        <div class="hero-content">
+            <h1>Sovereignty Through Security</h1>
+            <p class="text-xl">Project Dr. One: A Decisive Response to Aerial Threats</p>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Section 1: Executive Summary -->
+        <section id="challenge" class="scroll-mt-24">
+            <h2 class="section-title">The Strategic Imperative</h2>
+            <p class="text-lg text-gray-600 mb-8">The Kurdistan Region faces a sustained and calculated campaign of hostile UAS attacks designed to undermine national security and economic stability. This is not a random threat, but a form of economic warfare targeting the heart of the region's prosperity. Conventional defenses are proving ineffective, creating a critical security gap that demands an immediate and sovereign solution.</p>
+            
+            <h3 class="sub-heading">The Risks of Inaction</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="risk-card">
+                    <h4 class="font-bold text-lg text-red-800">Cascading Economic Damage</h4>
+                    <p class="text-red-700">Continued attacks on energy infrastructure risk billions in lost revenue, deter foreign investment, and threaten funding for essential public services.</p>
+                </div>
+                <div class="risk-card">
+                    <h4 class="font-bold text-lg text-red-800">Erosion of Sovereignty</h4>
+                    <p class="text-red-700">Failure to control the region's airspace cedes a strategic advantage to adversaries and undermines the KRG's authority and international standing.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <!-- Section 2: Threat Analysis -->
+        <section id="threat-analysis" class="scroll-mt-24">
+            <h2 class="section-title">Interactive Threat Matrix</h2>
+            <p class="mb-6 text-gray-600">The following map provides a detailed, interactive overview of the coordinated attacks on the Kurdistan Region's critical infrastructure. Hover over targets for details.</p>
+            <div id="map" class="map-container" style="background-image: url('https://krso.gov.krd/content/upload/1/root/administrative12_w1200.jpg');">
+                <svg class="attack-vector">
+                    <path class="vector-path" d="M 400 450 Q 450 350 500 250" />
+                    <path class="vector-path" d="M 350 480 Q 300 350 250 150" style="animation-delay: -1s;" />
+                    <path class="vector-path" d="M 550 500 Q 650 400 700 350" style="animation-delay: -2s;" />
+                </svg>
+                
+                <div class="attack-point" style="top: 41%; left: 55%;"></div>
+                <div class="map-tooltip" style="top: 31%; left: 56%;">
+                    <h4 class="font-bold">Khurmala Oil Field</h4>
+                    <p class="text-sm">Repeatedly targeted, causing significant production halts. Critical to Erbil's energy supply.</p>
+                </div>
+
+                <div class="attack-point" style="top: 22%; left: 42%;"></div>
+                <div class="map-tooltip" style="top: 12%; left: 43%;">
+                    <h4 class="font-bold">Tawke & Peshkabir</h4>
+                    <p class="text-sm">Key export fields. Attacks aim to disrupt international supply and regional revenue.</p>
+                </div>
+
+                <div class="attack-point" style="top: 55%; left: 78%;"></div>
+                <div class="map-tooltip" style="top: 45%; left: 79%;">
+                    <h4 class="font-bold">Sulaymaniyah Gas Fields</h4>
+                    <p class="text-sm">Strategic asset for power generation. Attacks threaten electricity for millions.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+        
+        <!-- Section 3: The Solution -->
+        <section id="solution" class="scroll-mt-24">
+            <h2 class="section-title">The Dr. One Engagement Sequence</h2>
+            <p class="mb-6 text-gray-600">Project Dr. One is a layered, integrated defense built on the military-standard D-TID-N kill chain. Each step is a link in a rapid and robust response cycle, illustrated by the continuously animated sequence below.</p>
+            <div class="engagement-sequence">
+                <!-- Card 1: Detect -->
+                <div class="engagement-step">
+                    <div class="engagement-animation-container">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                            <defs><path id="radar-shape" d="M 50,90 L 10,10 L 90,10 Z" /></defs>
+                            <clipPath id="radar-clip"><use href="#radar-shape" /></clipPath>
+                            <g clip-path="url(#radar-clip)">
+                                <circle r="0" fill="#3b82f6" fill-opacity="0.5">
+                                    <animate attributeName="r" from="0" to="80" dur="2s" repeatCount="indefinite" />
+                                    <animate attributeName="opacity" from="1" to="0" dur="2s" repeatCount="indefinite" />
+                                </circle>
+                            </g>
+                            <use href="#radar-shape" fill="none" stroke="#3b82f6" stroke-width="1"/>
+                            <path d="M 50,90 L 10,10" stroke="#3b82f6" stroke-width="2" style="transform-origin: 50px 90px;">
+                                <animateTransform attributeName="transform" type="rotate" from="-45" to="45" dur="3s" repeatCount="indefinite" />
+                            </path>
+                            <circle cx="75" cy="30" r="3" fill="#ef4444" />
+                        </svg>
+                    </div>
+                    <h4>1. DETECT</h4><p>IRIS radar provides 24/7, 360° airspace surveillance.</p>
+                </div>
+                <!-- Card 2: Track -->
+                <div class="engagement-step">
+                    <div class="engagement-animation-container">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                            <path d="M15,70 C 40,20 60,90 85,30" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="4 4" />
+                            <circle r="3" fill="#ef4444">
+                                <animateMotion dur="4s" repeatCount="indefinite" path="M15,70 C 40,20 60,90 85,30" />
+                            </circle>
+                        </svg>
+                    </div>
+                    <h4>2. TRACK</h4><p>A stable, high-fidelity 3D track is established.</p>
+                </div>
+                <!-- Card 3: Classify -->
+                <div class="engagement-step">
+                    <div class="engagement-animation-container">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                            <path d="M10 80 H 90" stroke="#6b7280" />
+                            <path d="M10 80 C 20 60, 30 100, 40 80 S 60 100, 70 80 S 90 100, 90 80" stroke="#3b82f6" stroke-width="2" fill="none">
+                                <animate attributeName="stroke-dasharray" from="0 100" to="100 0" dur="3s" repeatCount="indefinite" />
+                            </path>
+                            <text x="50" y="40" font-size="8" text-anchor="middle">DRONE</text>
+                        </svg>
+                    </div>
+                    <h4>3. CLASSIFY</h4><p>Micro-Doppler & AI confirm the threat type.</p>
+                </div>
+                <!-- Card 4: Cue -->
+                <div class="engagement-step">
+                    <div class="engagement-animation-container">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                            <rect x="10" y="40" width="20" height="20" rx="2" fill="#3b82f6" />
+                            <rect x="70" y="40" width="20" height="20" rx="2" fill="#16a34a" />
+                            <circle r="1.5" fill="#3b82f6">
+                                <animateMotion dur="1.5s" repeatCount="indefinite" path="M32 50 H 68" />
+                            </circle>
+                        </svg>
+                    </div>
+                    <h4>4. CUE</h4><p>Target data is sent to the DroneCatcher GCS.</p>
+                </div>
+                <!-- Card 5: Launch -->
+                <div class="engagement-step">
+                    <div class="engagement-animation-container">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                             <path fill="#3b82f6" d="M50 80L60 95H40Z M45 80 H55 V60 H45Z">
+                                <animateTransform attributeName="transform" type="translate" from="0 0" to="0 -100" dur="2s" repeatCount="indefinite" />
+                             </path>
+                        </svg>
+                    </div>
+                    <h4>5. LAUNCH</h4><p>DroneCatcher autonomously launches to intercept.</p>
+                </div>
+                <!-- Card 6: Engage -->
+                <div class="engagement-step">
+                    <div class="engagement-animation-container">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                            <path fill="#ef4444" d="M50 45L51 49H49L50 45ZM50 55L49 51H51L50 55ZM55 50L51 51V49L55 50ZM45 50L49 49V51L45 50Z" />
+                            <circle cx="50" cy="50" r="0" stroke="#3b82f6" stroke-width="2" fill="rgba(59, 130, 246, 0.3)">
+                                <animate attributeName="r" from="0" to="20" dur="1s" begin="0.5s" fill="freeze" />
+                                <animate attributeName="r" from="0" to="20" dur="1s" begin="2.5s" fill="freeze" />
+                            </circle>
+                        </svg>
+                    </div>
+                    <h4>6. ENGAGE</h4><p>Onboard sensors lock on and fire the net gun.</p>
+                </div>
+                <!-- Card 7: Neutralize -->
+                <div class="engagement-step">
+                    <div class="engagement-animation-container">
+                        <svg viewBox="0 0 100 100" width="100%" height="100%">
+                            <g>
+                               <circle cx="50" cy="50" r="12" fill="rgba(239, 68, 68, 0.5)" />
+                               <circle cx="50" cy="50" r="15" stroke="#6b7280" stroke-width="1" fill="none" stroke-dasharray="3 3"/>
+                               <animateTransform attributeName="transform" type="translate" from="0 0" to="0 80" dur="3s" repeatCount="indefinite" />
+                            </g>
+                        </svg>
+                    </div>
+                    <h4>7. NEUTRALIZE</h4><p>The threat is captured for safe recovery and analysis.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+        
+        <!-- Deployment Scenarios Section -->
+        <section id="deployment" class="scroll-mt-24">
+            <h2 class="section-title">Flexible Deployment Scenarios</h2>
+            <p class="mb-6 text-gray-600">Project Dr. One is not a one-size-fits-all solution. Its modular components allow for tailored configurations to protect a wide range of assets.</p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="deployment-scenario-card">
+                    <img src="https://placehold.co/600x400/1e3a8a/ffffff?text=Oil+Refinery" alt="Oil Refinery">
+                    <div class="p-6">
+                        <h4 class="font-bold text-lg">Fixed-Site Defense</h4>
+                        <p class="text-gray-600">Permanent installation at critical infrastructure like oil fields, government buildings, and airports, providing a 24/7 protective shield.</p>
+                    </div>
+                </div>
+                <div class="deployment-scenario-card">
+                    <img src="https://placehold.co/600x400/1e3a8a/ffffff?text=VIP+Convoy" alt="VIP Convoy">
+                    <div class="p-6">
+                        <h4 class="font-bold text-lg">Mobile Protection</h4>
+                        <p class="text-gray-600">Vehicle-mounted systems create a mobile defensive bubble to secure VIP convoys, troop movements, and dynamic operations.</p>
+                    </div>
+                </div>
+                <div class="deployment-scenario-card">
+                    <img src="https://placehold.co/600x400/1e3a8a/ffffff?text=Public+Event" alt="Public Event">
+                    <div class="p-6">
+                        <h4 class="font-bold text-lg">Temporary Event Security</h4>
+                        <p class="text-gray-600">Rapid deployment capabilities ensure temporary, high-level security for major public gatherings, summits, and national events.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+        
+        <!-- Proven Performance Section -->
+        <section id="performance" class="scroll-mt-24">
+            <h2 class="section-title">Proven Performance & Case Studies</h2>
+            <p class="mb-6 text-gray-600">This system is not theoretical. It is a field-proven solution trusted by NATO governments and security agencies to protect their most sensitive assets.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="case-study-card">
+                    <h4 class="font-bold text-lg mb-2">Case Study: G7 Summit Security</h4>
+                    <p class="text-gray-600">Deployed as a primary C-UAS layer for a recent G7 summit, the system provided flawless airspace security, detecting and classifying over 200 non-hostile drones and ensuring zero unauthorized incursions into the no-fly zone.</p>
+                </div>
+                 <div class="case-study-card">
+                    <h4 class="font-bold text-lg mb-2">Case Study: International Airport Protection</h4>
+                    <p class="text-gray-600">Currently operational at a major European airport, the system has reduced false alarm rates by over 95% compared to previous solutions, allowing air traffic control to focus only on genuine threats.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <!-- Partnership Section -->
+        <section id="partnership" class="scroll-mt-24">
+            <h2 class="section-title">A Secure & Trustworthy Partnership</h2>
+            <p class="mb-6 text-gray-600">We offer more than just technology; we offer a long-term strategic partnership dedicated to enhancing the sovereign security capabilities of the Kurdistan Region.</p>
+
+            <h3 class="sub-heading">System Security & Encryption</h3>
+            <p class="text-gray-600 mb-4">Command and control is maintained through robust, military-grade encrypted datalinks. This ensures that the connection between the operator and the DroneCatcher is immune to hostile jamming or hacking attempts, guaranteeing system reliability when it matters most.</p>
+            <div class="security-animation-container">
+                <svg width="100%" height="100%" viewBox="0 0 200 100">
+                    <!-- GCS -->
+                    <rect x="10" y="40" width="30" height="20" rx="2" fill="#374151"/>
+                    <text x="25" y="52" font-size="6" text-anchor="middle" fill="white">GCS</text>
+                    <!-- DroneCatcher -->
+                    <path d="M170 40L180 55H160Z M165 40 H175 V20 H165Z" fill="#3b82f6"/>
+                    <text x="170" y="62" font-size="5" text-anchor="middle">Catcher</text>
+                    <!-- Hacker -->
+                    <circle cx="100" cy="85" r="10" fill="#ef4444"/>
+                    <text x="100" y="88" font-size="6" text-anchor="middle" fill="white">X</text>
+                    <!-- Hacking Attempts -->
+                    <path class="hacking-attempt" d="M100 75 L 80 55" />
+                    <path class="hacking-attempt" d="M100 75 L 120 55" style="animation-delay: 0.2s;"/>
+                    <!-- Secure Link -->
+                    <path id="secure-link-path" class="secure-link" d="M40 50 H 165" />
+                    <g class="padlock">
+                        <path d="M-3 -4 h6 v-2 a3 3 0 1 0 -6 0z M-4 -2 h8 v5 h-8z">
+                            <animateMotion dur="3s" repeatCount="indefinite" path="M40 50 H 165" />
+                        </path>
+                    </g>
+                </svg>
+            </div>
+
+            <h3 class="sub-heading">Training & Certification Pathway</h3>
+            <div class="training-pathway">
+                <div class="training-phase">
+                    <div class="training-phase-icon">1</div>
+                    <h4 class="font-bold">Operator Course</h4>
+                    <p class="text-sm text-gray-600">Hands-on system operation for front-line security forces.</p>
+                </div>
+                <div class="training-phase">
+                    <div class="training-phase-icon">2</div>
+                    <h4 class="font-bold">Maintainer Course</h4>
+                    <p class="text-sm text-gray-600">Technical training for KRG staff on first-line system upkeep.</p>
+                </div>
+                <div class="training-phase">
+                    <div class="training-phase-icon">3</div>
+                    <h4 class="font-bold">"Train the Trainer"</h4>
+                    <p class="text-sm text-gray-600">Creating certified KRG instructors for long-term self-sufficiency.</p>
+                </div>
+            </div>
+
+            <h3 class="sub-heading">Dedicated Program Management</h3>
+            <p class="text-gray-600">Upon initiation, a dedicated, multi-disciplinary team will be assigned to the KRG. A single Program Manager will serve as your consistent point of contact, ensuring clear communication, seamless implementation, and accountability throughout the project lifecycle.</p>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+        
+        <!-- Neutralization in Action -->
+        <section id="neutralization" class="scroll-mt-24">
+            <h2 class="section-title">Neutralization in Action: The DroneCatcher</h2>
+            <p class="mb-6 text-gray-600">The heart of the Dr. One system's active defense is the DroneCatcher's surgical net capture. This low-collateral-damage approach not only neutralizes the threat but preserves it for critical intelligence analysis. Select a recovery method below to see a detailed animation of the engagement.</p>
+            <div class="recovery-options">
+                <button id="towBtn" class="recovery-btn active">Tow-Away for Forensics</button>
+                <button id="parachuteBtn" class="recovery-btn">Parachute for Safety</button>
+            </div>
+            <div class="recovery-animation-container">
+                <div id="catcher" class="catcher-drone">
+                    <svg viewBox="0 0 100 100" fill="#3b82f6"><path d="M50 0L65 25H35L50 0ZM50 100L35 75H65L50 100ZM100 50L75 35V65L100 50ZM0 50L25 65V35L0 50Z"/><circle cx="50" cy="50" r="30"/></svg>
+                </div>
+                <div id="drone" class="hostile-drone">
+                    <svg viewBox="0 0 100 100" fill="#ef4444"><path d="M50 10L55 30H45L50 10ZM50 90L45 70H55L50 90ZM90 50L70 55V45L90 50ZM10 50L30 45V55L10 50Z"/><circle cx="50" cy="50" r="20"/></svg>
+                </div>
+                <div id="net" class="net"></div>
+                <div id="parachute" class="parachute"></div>
+            </div>
+            <div class="animation-labels">
+                <div class="label-item"><div class="color-box bg-blue-500"></div><span>DroneCatcher (Interceptor)</span></div>
+                <div class="label-item"><div class="color-box bg-red-500"></div><span>Hostile Drone</span></div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <!-- Budget Section -->
+        <section id="budget" class="scroll-mt-24">
+            <h2 class="section-title">Preliminary Budgetary Framework</h2>
+            <p class="mb-6 text-gray-600">The acquisition of Project Dr. One is a strategic investment in national security and economic preservation. A formal quotation requires a detailed site survey and joint needs analysis.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="budget-card">
+                    <div class="budget-card-icon">⚙️</div>
+                    <h4 class="font-bold">Hardware Acquisition</h4>
+                    <p class="text-gray-600 text-sm">IRIS Radars, DroneCatchers, C2 stations.</p>
+                </div>
+                <div class="budget-card">
+                    <div class="budget-card-icon">🏗️</div>
+                    <h4 class="font-bold">Deployment & Integration</h4>
+                    <p class="text-gray-600 text-sm">Site surveys, installation, and calibration.</p>
+                </div>
+                <div class="budget-card">
+                    <div class="budget-card-icon">🎓</div>
+                    <h4 class="font-bold">Training Program</h4>
+                    <p class="text-gray-600 text-sm">Operator, maintainer, and "Train the Trainer" courses.</p>
+                </div>
+                <div class="budget-card">
+                    <div class="budget-card-icon">🛠️</div>
+                    <h4 class="font-bold">Through-Life Sustainment</h4>
+                    <p class="text-gray-600 text-sm">Spares, support, and software updates.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <!-- Contacts Section -->
+        <section id="contacts" class="scroll-mt-24">
+            <h2 class="section-title">Key Contacts & Inquiries</h2>
+            <p class="mb-6 text-gray-600">For technical specifications and direct inquiries, please refer to the primary technology partners below. A dedicated program manager will be assigned to serve as a single point of contact for the Government of the Kurdistan Region upon initiation of the procurement process.</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="contact-card">
+                    <h3 class="font-bold text-xl mb-2">Robin Radar Systems</h3>
+                    <p class="text-gray-600 mb-4">Global leader in 3D radar technology for drone detection and tracking.</p>
+                    <p class="font-semibold">Email: <a href="mailto:info@robinradar.com" class="text-blue-600 hover:underline">info@robinradar.com</a></p>
+                    <p class="font-semibold">Website: <a href="https://robinradar.com" target="_blank" class="text-blue-600 hover:underline">robinradar.com</a></p>
+                </div>
+                <div class="contact-card">
+                    <h3 class="font-bold text-xl mb-2">Delft Dynamics (DroneCatcher)</h3>
+                    <p class="text-gray-600 mb-4">Specialists in unmanned systems and kinetic, low-collateral C-UAS solutions.</p>
+                    <p class="font-semibold">Email: <a href="mailto:info@delftdynamics.nl" class="text-blue-600 hover:underline">info@delftdynamics.nl</a></p>
+                    <p class="font-semibold">Website: <a href="https://www.delftdynamics.nl/dronecatcher" target="_blank" class="text-blue-600 hover:underline">delftdynamics.nl/dronecatcher</a></p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-300">
+
+        <!-- Next Steps Section -->
+        <section id="next-steps" class="scroll-mt-24 text-center">
+             <h2 class="section-title mx-auto" style="width: fit-content;">Begin the Strategic Partnership</h2>
+            <p class="mt-4 mb-8 text-lg text-gray-600 max-w-3xl mx-auto">We propose a clear, collaborative, and transparent process to move from this initial proposal to full operational capability, ensuring the final solution is perfectly tailored to the security needs of the Kurdistan Region.</p>
+            <a href="mailto:info@sentinel-dome-initiative.com" class="bg-yellow-500 text-white px-8 py-4 rounded-md hover:bg-yellow-600 text-lg font-semibold transition-transform transform hover:scale-105">Request a Confidential Technical Briefing</a>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-6 text-center">
+            <p>A Proposal for the Enhanced Security of the Kurdistan Region</p>
+            <p class="text-sm text-gray-400 mt-2">Submitted for the review of: R.K.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hero Drone Animation
+        const heroDronesContainer = document.getElementById('hero-drones-container');
+        for (let i = 0; i < 15; i++) {
+            const drone = document.createElement('div');
+            drone.className = 'hero-drone';
+            drone.style.left = `${Math.random() * 100}%`;
+            drone.style.top = `${Math.random() * 100}%`;
+            drone.style.animationDelay = `${Math.random() * 5}s`;
+            drone.style.setProperty('--tx', `${(Math.random() - 0.5) * 400}px`);
+            drone.style.setProperty('--ty', `${(Math.random() - 0.5) * 400}px`);
+            heroDronesContainer.appendChild(drone);
+        }
+
+        // Map Tooltip Logic
+        const attackPoints = document.querySelectorAll('.attack-point');
+        attackPoints.forEach(point => {
+            const tooltip = point.nextElementSibling;
+            point.addEventListener('mousemove', (e) => {
+                const mapRect = document.getElementById('map').getBoundingClientRect();
+                tooltip.style.left = `${e.clientX - mapRect.left + 20}px`;
+                tooltip.style.top = `${e.clientY - mapRect.top - tooltip.offsetHeight - 10}px`;
+            });
+        });
+
+        // Neutralization Animation Logic
+        const towBtn = document.getElementById('towBtn');
+        const parachuteBtn = document.getElementById('parachuteBtn');
+        const catcher = document.getElementById('catcher');
+        const drone = document.getElementById('drone');
+        const net = document.getElementById('net');
+        const parachute = document.getElementById('parachute');
+        const animationContainer = document.querySelector('.recovery-animation-container');
+
+        function resetAnimation() {
+            [catcher, drone, net, parachute].forEach(el => {
+                el.style.transition = 'none';
+                el.style.transform = '';
+            });
+
+            catcher.style.left = '10%';
+            catcher.style.top = '40%';
+            drone.style.left = '100%';
+            drone.style.top = '40%';
+            net.style.opacity = '0';
+            net.style.transform = 'scale(0)';
+            parachute.style.opacity = '0';
+            parachute.style.transform = 'scaleY(0) translateY(-20px)';
+            
+            catcher.offsetHeight; // Force reflow
+
+            [catcher, drone, net, parachute].forEach(el => {
+                el.style.transition = '';
+            });
+        }
+
+        function playTowAnimation() {
+            resetAnimation();
+            setTimeout(() => {
+                // 1. Hostile drone flies into view
+                drone.style.transition = 'left 3s linear';
+                drone.style.left = '50%';
+
+                // 2. Catcher launches to intercept
+                setTimeout(() => {
+                    catcher.style.transition = 'all 2s ease-out';
+                    catcher.style.left = '45%';
+                }, 2000);
+
+                // 3. Net fires
+                setTimeout(() => {
+                    net.style.left = `${drone.offsetLeft}px`;
+                    net.style.top = `${drone.offsetTop}px`;
+                    net.style.transform = 'scale(1)';
+                    net.style.opacity = '1';
+                }, 4500);
+
+                // 4. Catcher tows captured drone away
+                setTimeout(() => {
+                    catcher.style.transition = 'all 3s ease-in';
+                    drone.style.transition = 'all 3s ease-in';
+                    net.style.transition = 'all 3s ease-in';
+                    
+                    const finalCatcherX = -200;
+                    const finalCatcherY = animationContainer.offsetHeight;
+                    catcher.style.transform = `translate(${finalCatcherX}px, ${finalCatcherY}px)`;
+
+                    const finalDroneX = -drone.offsetLeft - 100;
+                    const finalDroneY = animationContainer.offsetHeight;
+                    drone.style.transform = `translate(${finalDroneX}px, ${finalDroneY}px)`;
+                    net.style.transform = `translate(${finalDroneX}px, ${finalDroneY}px) scale(1)`;
+                }, 5500);
+            }, 100);
+        }
+
+        function playParachuteAnimation() {
+            resetAnimation();
+             setTimeout(() => {
+                // 1. Hostile drone flies into view
+                drone.style.transition = 'left 3s linear';
+                drone.style.left = '50%';
+
+                // 2. Catcher launches to intercept
+                setTimeout(() => {
+                    catcher.style.transition = 'all 2s ease-out';
+                    catcher.style.left = '45%';
+                }, 2000);
+
+                // 3. Net fires
+                setTimeout(() => {
+                    net.style.left = `${drone.offsetLeft}px`;
+                    net.style.top = `${drone.offsetTop}px`;
+                    net.style.transform = 'scale(1)';
+                    net.style.opacity = '1';
+                }, 4500);
+
+                // 4. Parachute deploys, drone falls, catcher flies away
+                setTimeout(() => {
+                    catcher.style.transition = 'all 2s ease-out';
+                    catcher.style.transform = 'translate(-200px, -200px)'; // Catcher flies away
+
+                    parachute.style.left = `${drone.offsetLeft - 15}px`;
+                    parachute.style.top = `${drone.offsetTop - 40}px`;
+                    parachute.style.transform = 'scaleY(1) translateY(0)';
+                    parachute.style.opacity = '1';
+
+                    const fallDist = animationContainer.offsetHeight - drone.offsetTop;
+                    
+                    drone.style.transition = 'transform 3s ease-in';
+                    net.style.transition = 'transform 3s ease-in';
+                    parachute.style.transition = 'transform 3s ease-in';
+
+                    drone.style.transform = `translateY(${fallDist}px)`;
+                    net.style.transform = `translateY(${fallDist}px) scale(1)`;
+                    parachute.style.transform = `translateY(${fallDist}px) scaleY(1)`;
+                }, 5500);
+            }, 100);
+        }
+
+        towBtn.addEventListener('click', () => {
+            if (towBtn.classList.contains('active')) return;
+            towBtn.classList.add('active');
+            parachuteBtn.classList.remove('active');
+            playTowAnimation();
+        });
+
+        parachuteBtn.addEventListener('click', () => {
+            if (parachuteBtn.classList.contains('active')) return;
+            parachuteBtn.classList.add('active');
+            towBtn.classList.remove('active');
+            playParachuteAnimation();
+        });
+
+        // Start with the default animation
+        playTowAnimation();
+    </script>
+</body>
+</html>
